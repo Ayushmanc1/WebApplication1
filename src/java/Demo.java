@@ -31,15 +31,15 @@ public class Demo {
         {
 
             // The ID of a public sample LUIS app that recognizes intents for turning on and off lights
-            String AppId = "f4d41b8b-b9cc-4dd0-a714-3c4b02d33445/generateAnswer";
+            String AppId = "/knowledgebases/f4d41b8b-b9cc-4dd0-a714-3c4b02d33445/generateAnswer";
             
             // Add your subscription key 
             String SubscriptionKey = "e34b677c70604a6eabd269fccd918e67";
-
+            
         URIBuilder builder = 
-            new URIBuilder("https://westus.api.cognitive.microsoft.com/qnamaker/v2.0" + AppId + "?");
+            new URIBuilder("https://westus.api.cognitive.microsoft.com/qnamaker/v2.0/knowledgebases/f4d41b8b-b9cc-4dd0-a714-3c4b02d33445/generateAnswer");
             //builder.setParameter("Ocp-Apim-Subscription-Key", SubscriptionKey);
-            builder.setParameter("question", Qus);
+            builder.setParameter("question:", "how to apply leave");
             //builder.setParameter("timezoneOffset", "0");
             //builder.setParameter("verbose", "false");
             //builder.setParameter("spellCheck", "false");
@@ -48,7 +48,7 @@ public class Demo {
             URI uri = builder.build();
             HttpGet request = new HttpGet(uri);
             request.setHeader("Ocp-Apim-Subscription-Key", SubscriptionKey);
-
+            request.addHeader("Content-Type", "application/json");
             HttpResponse response = httpclient.execute(request);
             HttpEntity entity = response.getEntity();
 
@@ -125,7 +125,7 @@ public class Demo {
                 String subres[] = responseXml.split(",");
                 for(int i = 0;i<subres.length;i++)
                 {
-                    System.out.println(subres[i]);
+                   // System.out.println(subres[i]);
                     String sub[] = subres[i].split(":");
                     if(sub[0].contains("score"))
                     {
