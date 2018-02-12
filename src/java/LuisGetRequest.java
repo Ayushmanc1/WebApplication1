@@ -81,8 +81,8 @@ public class LuisGetRequest {
             // Add your subscription key 
             String SubscriptionKey = "e34b677c70604a6eabd269fccd918e67";
 
-        URIBuilder builder = 
-            new URIBuilder("https://westus.api.cognitive.microsoft.com/qnamaker/v2.0" + AppId + "?");
+         URIBuilder builder = 
+            new URIBuilder("https://westus.api.cognitive.microsoft.com/qnamaker/v2.0/knowledgebases/f4d41b8b-b9cc-4dd0-a714-3c4b02d33445/generateAnswer");
             //builder.setParameter("Ocp-Apim-Subscription-Key", SubscriptionKey);
             builder.setParameter("question", Qus);
             //builder.setParameter("timezoneOffset", "0");
