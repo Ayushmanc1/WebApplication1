@@ -38,6 +38,7 @@ public class Luis extends HttpServlet {
         HttpSession s = request.getSession(false);
         String Sessiondata=  s.getAttribute("Chat").toString();
          String ResponceQNA=  luis.QNA(Req);
+         Sessiondata+=";"+Req;
                            if(ResponceQNA.toLowerCase().contains("resourcenotfound"))
                            {
                             Sessiondata+=";"+"Network issue QNA maker"+ResponceQNA; 
