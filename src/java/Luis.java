@@ -31,6 +31,23 @@ public class Luis extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    protected void QNA(HttpServletRequest request,HttpServletResponse response) throws IOException
+    {
+        LuisGetRequest luis = new LuisGetRequest();
+        String Req = request.getParameter("TextBox1");
+        HttpSession s = request.getSession(false);
+        String Sessiondata=  s.getAttribute("Chat").toString();
+         String ResponceQNA=  luis.QNA(Req);
+                           if(ResponceQNA.toLowerCase().contains("resourcenotfound"))
+                           {
+                            Sessiondata+=";"+"Network issue QNA maker"+ResponceQNA; 
+                            s.setAttribute("Chat", Sessiondata);  
+                            response.sendRedirect("ChatBot POC.jsp");
+                            return;
+                           }    
+    }
+    
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -154,14 +171,7 @@ public class Luis extends HttpServlet {
                         }
                         else 
                         {
-                           String ResponceQNA=  luis.QNA(Req);
-                           if(ResponceQNA.toLowerCase().contains("resourcenotfound"))
-                           {
-                            Sessiondata+=";"+"Network issue QNA maker"+ResponceQNA; 
-                            s.setAttribute("Chat", Sessiondata);  
-                            response.sendRedirect("ChatBot POC.jsp");
-                            return;
-                           }
+                            QNA(request, response);
                         }
                     } 
             }
@@ -186,21 +196,31 @@ public class Luis extends HttpServlet {
                         }
                         else
                         {
-                            String ResponceQNA=  luis.QNA(Req);
-                           if(ResponceQNA.toLowerCase().contains("resourcenotfound"))
-                           {
-                            Sessiondata+=";"+"Network issue QNA maker"+ResponceQNA; 
-                            s.setAttribute("Chat", Sessiondata);  
-                            response.sendRedirect("ChatBot POC.jsp");
-                            return;
-                           }
+                            QNA(request, response);
                         }
                     }
                 }
            }
            else if(resp.contains("create rr"))
            {
-               
+               String subres[] = resp.split(",");
+                for(int i = 0;i<subres.length;i++)
+                {
+                    String sub[] = subres[i].split(":");
+                    if(sub[0].contains("score"))
+                    {
+                        String ss = sub[1].replace('}', ' ');
+                    d=  Double.parseDouble(ss);                   
+                        if(d==1 || d>0.60)
+                        {
+                            
+                        }
+                        else
+                        {
+                            QNA(request, response);
+                        }
+                    }
+                }
            }
            else if(resp.contains("greetings"))
            {
@@ -222,29 +242,14 @@ public class Luis extends HttpServlet {
                         }
                         else
                     {
-                            String ResponceQNA=  luis.QNA(Req);
-                           if(ResponceQNA.toLowerCase().contains("resourcenotfound"))
-                           {
-                            Sessiondata+=";"+"Network issue QNA maker"+ResponceQNA; 
-                            s.setAttribute("Chat", Sessiondata);  
-                            response.sendRedirect("ChatBot POC.jsp");
-                            return;
-                           }
+                        QNA(request, response);
                     }   
                     }
-                    
                 }
            }
            else 
            {
-                           String ResponceQNA=  luis.QNA(Req);
-                           if(ResponceQNA.toLowerCase().contains("resourcenotfound"))
-                           {
-                            Sessiondata+=";"+"Network issue QNA maker"+ResponceQNA; 
-                            s.setAttribute("Chat", Sessiondata);  
-                            response.sendRedirect("ChatBot POC.jsp");
-                            return;
-                           }
+                        QNA(request, response);
            }
            //
            //response.sendRedirect("ChatBot POC.jsp");
