@@ -135,36 +135,68 @@ public class Luis extends HttpServlet {
                else if(SkillSet !="")
                {
                    RR rr = new RR();
-                   Sessiondata+=";"+ rr.RR(SkillSet);
+                   Sessiondata+=";"+ rr.RRSkillSet(SkillSet);
                    s.setAttribute("Chat", Sessiondata);  
              response.sendRedirect("ChatBot POC.jsp");               
              return;
                }
                else
                {    
-                   Sessiondata+=";"+ "Fail is scoring please check";
-                   s.setAttribute("Chat", Sessiondata);  
-             response.sendRedirect("ChatBot POC.jsp");               
-             return;
+                   String ResponceQNA=  luis.QNA(Req);
+                           if(ResponceQNA.toLowerCase().contains("resourcenotfound"))
+                           {
+                            Sessiondata+=";"+"Network issue QNA maker"+ResponceQNA; 
+                            s.setAttribute("Chat", Sessiondata);  
+                            response.sendRedirect("ChatBot POC.jsp");
+                            return;
+                           }
                }   
                         }
                         else 
                         {
-                            Sessiondata+=";"+"Score fail "+d;
-                             s.setAttribute("Chat", Sessiondata);  
-             response.sendRedirect("ChatBot POC.jsp");
-             return;
+                           String ResponceQNA=  luis.QNA(Req);
+                           if(ResponceQNA.toLowerCase().contains("resourcenotfound"))
+                           {
+                            Sessiondata+=";"+"Network issue QNA maker"+ResponceQNA; 
+                            s.setAttribute("Chat", Sessiondata);  
+                            response.sendRedirect("ChatBot POC.jsp");
+                            return;
+                           }
                         }
                     } 
             }
            }
            else if(resp.contains("thankyou"))
            {
+               String subres[] = resp.split(",");
+                for(int i = 0;i<subres.length;i++)
+                {
+                    String sub[] = subres[i].split(":");
+                    if(sub[0].contains("score"))
+                    {
+                        String ss = sub[1].replace('}', ' ');
+                    d=  Double.parseDouble(ss);                   
+                        if(d==1 || d>0.60)
+                        {
                RR rr = new RR();
                Sessiondata +=";" + rr.Thankyou(Req,"thankyou");
                  s.setAttribute("Chat", Sessiondata);  
                response.sendRedirect("ChatBot POC.jsp");
                return;
+                        }
+                        else
+                        {
+                            String ResponceQNA=  luis.QNA(Req);
+                           if(ResponceQNA.toLowerCase().contains("resourcenotfound"))
+                           {
+                            Sessiondata+=";"+"Network issue QNA maker"+ResponceQNA; 
+                            s.setAttribute("Chat", Sessiondata);  
+                            response.sendRedirect("ChatBot POC.jsp");
+                            return;
+                           }
+                        }
+                    }
+                }
            }
            else if(resp.contains("create rr"))
            {
@@ -172,17 +204,47 @@ public class Luis extends HttpServlet {
            }
            else if(resp.contains("greetings"))
            {
+               String subres[] = resp.split(",");
+                for(int i = 0;i<subres.length;i++)
+                {
+                    String sub[] = subres[i].split(":");
+                    if(sub[0].contains("score"))
+                    {
+                        String ss = sub[1].replace('}', ' ');
+                    d=  Double.parseDouble(ss);                   
+                        if(d==1 || d>0.60)
+                        {
                RR rr = new RR();
                Sessiondata +=";" + rr.Thankyou(Req,"greetings");
                  s.setAttribute("Chat", Sessiondata);  
                response.sendRedirect("ChatBot POC.jsp");
                return;
+                        }
+                        else
+                    {
+                            String ResponceQNA=  luis.QNA(Req);
+                           if(ResponceQNA.toLowerCase().contains("resourcenotfound"))
+                           {
+                            Sessiondata+=";"+"Network issue QNA maker"+ResponceQNA; 
+                            s.setAttribute("Chat", Sessiondata);  
+                            response.sendRedirect("ChatBot POC.jsp");
+                            return;
+                           }
+                    }   
+                    }
+                    
+                }
            }
            else 
            {
-             s.setAttribute("Chat", "Intent Not Supported yet");  
-             response.sendRedirect("ChatBot POC.jsp");
-             return;
+                           String ResponceQNA=  luis.QNA(Req);
+                           if(ResponceQNA.toLowerCase().contains("resourcenotfound"))
+                           {
+                            Sessiondata+=";"+"Network issue QNA maker"+ResponceQNA; 
+                            s.setAttribute("Chat", Sessiondata);  
+                            response.sendRedirect("ChatBot POC.jsp");
+                            return;
+                           }
            }
            //
            //response.sendRedirect("ChatBot POC.jsp");
