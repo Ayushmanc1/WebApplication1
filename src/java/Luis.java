@@ -60,6 +60,17 @@ public class Luis extends HttpServlet {
            String Sessiondata=  s.getAttribute("Chat").toString();
            Sessiondata+= ";"+Req;
                 double d=0;
+                TextClient tc = new TextClient();
+                //Sessiondata += tc.GetIntent("Hello");
+                try{
+                tc.GetIntent("Hello");
+                }
+                catch(Exception ex)
+                {
+                    
+                }
+                //s.setAttribute("Chat", Sessiondata);
+                //response.sendRedirect("ChatBot POC.jsp");
            //Sessiondata+= ":"+luis.main(Request);
            //out.println(luis.main(Req));
            String resp =luis.main(Req);
@@ -254,6 +265,14 @@ public class Luis extends HttpServlet {
            }
            //
            //response.sendRedirect("ChatBot POC.jsp");
+        }
+        catch(Exception ex)
+        {
+            HttpSession s = request.getSession(false);
+           String Sessiondata=  s.getAttribute("Chat").toString();
+           Sessiondata+= ";"+ex;
+           s.setAttribute("Chat", Sessiondata);
+           response.sendRedirect("ChatBot POC.jsp");
         }
     }
 
